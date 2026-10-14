@@ -16,6 +16,7 @@ export default function EmployeeManagement() {
   ];
 
   return (
+    /*Here I need to check how to fix this section with id employees, because it shouldn't be just employees, but also departments */
     <section id="employees" className="p-8">
       {/* Page title and Add button */}
       <EmployeeManagementTop />
