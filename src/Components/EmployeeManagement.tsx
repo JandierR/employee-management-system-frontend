@@ -3,7 +3,13 @@ import type { Employees } from '../Types';
 import ReusableManagementTop from './ReusableDashboardTop';
 import TableFooter from './TableFooter';
 
-export default function EmployeeManagement() {
+interface EmployeeManagementProps {
+  onAddEmployee: () => void;
+}
+
+export default function EmployeeManagement({
+  onAddEmployee,
+}: EmployeeManagementProps) {
   const employeeList: Employees[] = [
     {
       id: 1,
@@ -22,6 +28,7 @@ export default function EmployeeManagement() {
         title="Employees"
         description="Manage your employees in one place."
         buttonText="+ Add Employee"
+        onAddEmployee={onAddEmployee}
       />
 
       {/* Employee table */}
