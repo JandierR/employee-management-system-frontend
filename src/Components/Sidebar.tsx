@@ -6,7 +6,7 @@ interface Dashboard {
 
 interface SidebarProps {
   showDashboard: (selectedDashboardId: number) => void;
-  goBack: (selectedDashboardId: number) => void;
+  goBack: () => void;
   dashboards: Dashboard[];
 }
 export default function Sidebar({
