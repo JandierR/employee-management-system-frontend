@@ -1,6 +1,6 @@
 import EmployeeTable from './EmployeeTable';
 import type { Employees } from '../Types';
-import EmployeeManagementTop from './EmployeeManagementTop';
+import ReusableManagementTop from './ReusableDashboardTop';
 import TableFooter from './TableFooter';
 
 export default function EmployeeManagement() {
@@ -16,15 +16,18 @@ export default function EmployeeManagement() {
   ];
 
   return (
-    /*Here I need to check how to fix this section with id employees, because it shouldn't be just employees, but also departments */
     <section id="employees" className="p-8">
       {/* Page title and Add button */}
-      <EmployeeManagementTop />
+      <ReusableManagementTop
+        title="Employees"
+        description="Manage your employees in one place."
+        buttonText="+ Add Employee"
+      />
 
       {/* Employee table */}
       <EmployeeTable employeeList={employeeList} />
       {/* Table footer */}
-      <TableFooter employeeList={employeeList} />
+      <TableFooter list={employeeList} dashboardType="employee" />
     </section>
   );
 }

@@ -1,0 +1,51 @@
+import type { Departments } from '../Types';
+
+interface DepartmentTableProps {
+  departmentList: Departments[];
+}
+
+export default function DepartmentTable({
+  departmentList,
+}: DepartmentTableProps) {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+      {/*I can take this department table and add more fields like ubication...*/}
+      <table className="w-full min-w-200 border-collapse text-left">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
+              Department
+            </th>
+          </tr>
+        </thead>
+
+        <tbody className="divide-y divide-gray-100">
+          {/*Here I need to check how to code fix this part when we have dinamic data */}
+          {departmentList.map((department) => (
+            <tr key={department.id} className="transition hover:bg-gray-50">
+              <td className="px-6 py-4">
+                <p className="text-sm font-semibold text-gray-900">
+                  {department.name}
+                </p>
+              </td>
+
+              <td className="px-6 py-4 text-right whitespace-nowrap">
+                <button
+                  type="button"
+                  className="mr-3 text-sm font-medium text-blue-600 transition hover:text-blue-800">
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  className="text-sm font-medium text-red-600 transition hover:text-red-800">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

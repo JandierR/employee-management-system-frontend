@@ -1,13 +1,22 @@
-import type { Employees } from '../Types';
+import type { Departments, Employees } from '../Types';
 
 interface TableFooterProps {
-  employeeList: Employees[];
+  list: Employees[] | Departments[];
+  dashboardType: string;
 }
 
-export default function TableFooter({ employeeList }: TableFooterProps) {
+export default function TableFooter({ list, dashboardType }: TableFooterProps) {
+  if (dashboardType === 'employee') {
+    return (
+      <p className="mt-4 text-sm text-gray-500">
+        Showing {list.length} employees
+      </p>
+    );
+  }
+
   return (
     <p className="mt-4 text-sm text-gray-500">
-      Showing {employeeList.length} employees
+      Showing {list.length} departments
     </p>
   );
 }

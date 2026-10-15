@@ -3,6 +3,7 @@ import EmployeeManagement from './Components/EmployeeManagement';
 import Header from './Components/Header';
 import Sidebar from './Components/Sidebar';
 import NoSelected from './Components/NoSelected';
+import DepartmentManagement from './Components/DepartmentManagement';
 
 function App() {
   const [selectedDashboard, setSelectedDashboard] = useState({
@@ -30,7 +31,9 @@ function App() {
   //Here I'll show the selectedDashboard either Employees or departments, when id has a number value 1 or 2 (almost done)
   let content = <NoSelected />;
   //Almost done because now I need to see how to check what id I'm showing, not just <EmployeeManagement />
-  if (selectedDashboard.dashboardId !== 0) content = <EmployeeManagement />;
+  if (selectedDashboard.dashboardId === 1) content = <EmployeeManagement />;
+  else if (selectedDashboard.dashboardId === 2)
+    content = <DepartmentManagement />;
 
   if (selectedDashboard)
     return (
