@@ -1,4 +1,3 @@
-import EmployeeTable from './EmployeeTable';
 import type { Departments } from '../Types';
 import ReusableManagementTop from './ReusableDashboardTop';
 import TableFooter from './TableFooter';
@@ -9,7 +8,7 @@ export default function DepartmentManagement() {
     {
       id: 1,
       name: 'Engineering',
-      description: 'blablabanababa',
+      description: 'Department for all Engineering employees',
     },
   ];
 
@@ -25,7 +24,7 @@ export default function DepartmentManagement() {
       {/* Employee table */}
       <DepartmentTable departmentList={departmentList} />
       {/* Table footer */}
-      <TableFooter list={departmentList} dashboardType="employee" />
+      <TableFooter list={departmentList} dashboardType="department" />
     </section>
   );
 }
