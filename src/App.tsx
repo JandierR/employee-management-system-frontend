@@ -20,6 +20,13 @@ function App() {
     }));
   }
 
+  function goBackNoSelectedView() {
+    setSelectedDashboard((prevState) => ({
+      ...prevState,
+      dashboardId: 0,
+    }));
+  }
+
   //Here I'll show the selectedDashboard either Employees or departments, when id has a number value 1 or 2 (almost done)
   let content = <NoSelected />;
   //Almost done because now I need to see how to check what id I'm showing, not just <EmployeeManagement />
@@ -29,6 +36,7 @@ function App() {
     return (
       <main className="flex min-h-screen  bg-gray-50">
         <Sidebar
+          goBack={goBackNoSelectedView}
           showDashboard={showSelectedDashboard}
           dashboards={selectedDashboard.dashboards}
         />

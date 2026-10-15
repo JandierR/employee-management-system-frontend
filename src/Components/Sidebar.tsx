@@ -1,3 +1,4 @@
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 interface Dashboard {
   dashboardId: number;
   dashboardName: string;
@@ -5,12 +6,23 @@ interface Dashboard {
 
 interface SidebarProps {
   showDashboard: (selectedDashboardId: number) => void;
+  goBack: (selectedDashboardId: number) => void;
   dashboards: Dashboard[];
 }
-export default function Sidebar({ showDashboard, dashboards }: SidebarProps) {
+export default function Sidebar({
+  showDashboard,
+  dashboards,
+  goBack,
+}: SidebarProps) {
   return (
     <aside className="w-60 shrink-0 bg-[#172033] text-white">
-      <div className="flex h-16 items-center px-6">
+      <div className="flex bg-[#2d3b55] h-16 items-center px-6 gap-3">
+        <button
+          onClick={goBack}
+          className="rounded-lg  hover:bg-[#3b4c6d] transition-colors duration-200">
+          <KeyboardBackspaceIcon />
+        </button>
+
         <h1 className="text-xl font-bold">Main Menu</h1>
       </div>
 
