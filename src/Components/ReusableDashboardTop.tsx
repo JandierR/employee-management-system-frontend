@@ -2,8 +2,8 @@ interface ReusableDashboardTopProps {
   description: string;
   title: string;
   buttonText: string;
-  onAddEmployee: () => void;
-  onAddDepartment: () => void;
+  onAddEmployee?: () => void;
+  onAddDepartment?: () => void;
 }
 export default function ReusableManagementTop({
   description,
