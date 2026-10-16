@@ -17,11 +17,6 @@ export default function NoSelected() {
             below by creating a new entry.
           </p>
         </div>
-
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full justify-center">
-          <Button text="Create User" />
-          <Button text="Create Department" />
-        </div>
       </div>
     </>
   );
