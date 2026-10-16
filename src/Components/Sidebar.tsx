@@ -33,7 +33,7 @@ export default function Sidebar({
               <li key={dashboard.dashboardId}>
                 <a
                   onClick={() => showDashboard(dashboard.dashboardId)}
-                  href="#employees"
+                  href={`#${dashboard.dashboardName.toLocaleLowerCase()}`}
                   className="block rounded-lg bg-[#2d3b55] hover:bg-[#3b4c6d]  text-sm font-medium px-4 py-3 text-white transition-colors duration-150">
                   {dashboard.dashboardName}
                 </a>

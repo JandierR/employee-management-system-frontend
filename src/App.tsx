@@ -62,7 +62,6 @@ function App() {
         dashboards={selectedDashboard.dashboards}
       />
       <main className="min-w-0 flex-1">
-        <Header />
         {content}
         {isEmployeeModalOpen ? (
           <EmployeeModal
