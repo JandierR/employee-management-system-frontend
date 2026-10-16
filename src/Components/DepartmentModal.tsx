@@ -39,6 +39,7 @@ export default function DepartmentModal({
         {/* Action Buttons */}
         <div className="pt-4 flex items-center justify-end space-x-3 border-t border-slate-100">
           <button
+            onClick={() => onClose(false)}
             type="button"
             className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
             Cancel

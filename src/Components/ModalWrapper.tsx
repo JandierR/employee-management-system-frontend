@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ModalWrapperProps {
   title: string;
-  onClose?: () => void;
+  onClose: (close: boolean) => void;
   children: React.ReactNode;
 }
 
@@ -20,7 +20,7 @@ export default function ModalWrapper({
           <h2 className="text-xl font-bold text-slate-800">{title}</h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => onClose(false)}
             className="text-slate-400 hover:text-slate-600 text-2xl font-light transition-colors">
             &times;
           </button>
