@@ -1,7 +1,7 @@
-import type { Employees } from '../Types';
+import type { Employee } from '../Types';
 
 interface EmployeeTableProps {
-  employeeList: Employees[];
+  employeeList: Employee[];
 }
 
 export default function EmployeeTable({ employeeList }: EmployeeTableProps) {

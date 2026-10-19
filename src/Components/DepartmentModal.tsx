@@ -19,7 +19,11 @@ export default function DepartmentModal({
     const enteredDeparmentName = deparmentName.current?.value;
     const enteredDepartmentDescription = deparmentDescription.current?.value;
 
+    //Here I typed ?? to make it '' if enteredDepartment doesn't have a value
+    //However, I need to remove it or fix it later when adding input validation so no empty inputs are available
     onAdd({
+      //Id must be an integer greater than 0
+      id: Math.random(),
       name: enteredDeparmentName ?? '',
       description: enteredDepartmentDescription ?? '',
     });

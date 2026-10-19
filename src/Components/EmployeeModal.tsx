@@ -1,11 +1,42 @@
+import { useRef } from 'react';
 import ModalWrapper from './ModalWrapper';
+import type { Employee } from '../Types';
 
 interface EmployeeModalProps {
   isOpen: boolean;
   onClose: (close: boolean) => void;
+  onAdd: (employee: Employee) => void;
 }
 //isOpen is not useful right now, I think
-export default function EmployeeModal({ isOpen, onClose }: EmployeeModalProps) {
+export default function EmployeeModal({
+  isOpen,
+  onClose,
+  onAdd,
+}: EmployeeModalProps) {
+  const employeeName = useRef<HTMLInputElement>(null);
+  const email = useRef<HTMLInputElement>(null);
+  const department = useRef<HTMLInputElement>(null);
+  const position = useRef<HTMLInputElement>(null);
+  const status = useRef<HTMLSelectElement>(null);
+
+  function handleSave() {
+    const enteredEmployeeName = employeeName.current?.value;
+    const enteredEmail = email.current?.value;
+    const enteredDepartment = department.current?.value;
+    const enteredPosition = position.current?.value;
+    const enteredStatus = status.current?.value;
+
+    onAdd({
+      //Id must be an integer greater than 0
+      id: Math.random(),
+      name: enteredEmployeeName ?? '',
+      email: enteredEmail ?? '',
+      department: enteredDepartment ?? '',
+      position: enteredPosition ?? '',
+      status: enteredStatus ?? '',
+    });
+  }
+
   return (
     <ModalWrapper title="Add new Employee" onClose={() => onClose(false)}>
       {/* Form Body */}
@@ -17,6 +48,7 @@ export default function EmployeeModal({ isOpen, onClose }: EmployeeModalProps) {
           </label>
           <input
             type="text"
+            ref={employeeName}
             placeholder="e.g. Sofia Ramirez"
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
           />
@@ -29,6 +61,7 @@ export default function EmployeeModal({ isOpen, onClose }: EmployeeModalProps) {
           </label>
           <input
             type="email"
+            ref={email}
             placeholder="e.g. sofia.ramirez@example.com"
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
           />
@@ -43,6 +76,7 @@ export default function EmployeeModal({ isOpen, onClose }: EmployeeModalProps) {
             </label>
             <input
               type="text"
+              ref={department}
               placeholder="e.g. Engineering"
               className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
             />
@@ -55,6 +89,7 @@ export default function EmployeeModal({ isOpen, onClose }: EmployeeModalProps) {
             </label>
             <input
               type="text"
+              ref={position}
               placeholder="e.g. Software Engineer"
               className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
             />
@@ -66,7 +101,9 @@ export default function EmployeeModal({ isOpen, onClose }: EmployeeModalProps) {
           <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
             Status
           </label>
-          <select className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 bg-white focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+          <select
+            ref={status}
+            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 bg-white focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
@@ -82,6 +119,7 @@ export default function EmployeeModal({ isOpen, onClose }: EmployeeModalProps) {
           </button>
           <button
             type="submit"
+            onClick={handleSave}
             className="px-4 py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
             Add Employee
           </button>

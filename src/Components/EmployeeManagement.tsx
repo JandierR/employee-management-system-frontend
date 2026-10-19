@@ -1,27 +1,18 @@
 import EmployeeTable from './EmployeeTable';
-import type { Employees } from '../Types';
+import type { Employee } from '../Types';
 import ReusableManagementTop from './ReusableDashboardTop';
 import TableFooter from './TableFooter';
 import Header from './Header';
 
 interface EmployeeManagementProps {
   onAddEmployee: () => void;
+  employeeList: Employee[];
 }
 
 export default function EmployeeManagement({
   onAddEmployee,
+  employeeList,
 }: EmployeeManagementProps) {
-  const employeeList: Employees[] = [
-    {
-      id: 1,
-      name: 'Sofia Ramirez',
-      email: 'sofia.ramirez@example.com',
-      department: 'Engineering',
-      position: 'Software Engineer',
-      status: 'Active',
-    },
-  ];
-
   return (
     <>
       <Header text="/ employee" />

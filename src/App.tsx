@@ -5,34 +5,29 @@ import NoSelected from './Components/NoSelected';
 import DepartmentManagement from './Components/DepartmentManagement';
 import EmployeeModal from './Components/EmployeeModal';
 import DepartmentModal from './Components/DepartmentModal';
-import type { Department, Employees } from './Types';
+import type { Department, Employee } from './Types';
 
 interface DashboardState {
   dashboardId: number;
   dashboards: { dashboardId: number; dashboardName: string }[];
-  employees: Employees[];
+  employees: Employee[];
   deparments: Department[];
 }
 
 function App() {
   const [isEmployeeModalOpen, setIsEmployeeModalOpen] = useState(false);
   const [isDepartmentModalOpen, setisDepartmentModalOpen] = useState(false);
-  const [selectedDashboard, setSelectedDashboard] = useState<DashboardState>(
-    {
-      dashboardId: 0,
-      dashboards: [
-        { dashboardId: 1, dashboardName: 'Employees' },
-        { dashboardId: 2, dashboardName: 'Departments' },
-      ],
-      employees: [],
-      deparments: [],
-    },
-    // console.log(),
-  );
-  //Quiero ver como hacer para imprimir departments para ver que cuando agrego un department, en realidad se guarde en ese array
-  //Aun asi, tambien se puede verificar visualmente en el dashboard o tabla de empleados
+  const [selectedDashboard, setSelectedDashboard] = useState<DashboardState>({
+    dashboardId: 0,
+    dashboards: [
+      { dashboardId: 1, dashboardName: 'Employees' },
+      { dashboardId: 2, dashboardName: 'Departments' },
+    ],
 
-  console.log(selectedDashboard.deparments);
+    //Here employees and departments are stored when adding a new entry
+    employees: [],
+    deparments: [],
+  });
 
   function showSelectedDashboard(selectedDashboardId: number) {
     setSelectedDashboard((prevState) => ({
@@ -44,7 +39,7 @@ function App() {
     }));
   }
 
-  function handleSaveDepartments(department: Department) {
+  function handleSaveDepartment(department: Department) {
     setSelectedDashboard((prevState) => {
       const newDepartment: Department = { ...department };
       return {
@@ -53,6 +48,15 @@ function App() {
       };
     });
     setisDepartmentModalOpen(false);
+  }
+
+  function handleSaveEmployee(employee: Employee) {
+    setSelectedDashboard((prevState) => {
+      const newEmployee: Employee = { ...employee };
+      return { ...prevState, employees: [...prevState.employees, newEmployee] };
+    });
+
+    setIsEmployeeModalOpen(false);
   }
 
   function goBackNoSelectedView() {
@@ -75,7 +79,12 @@ function App() {
   let content = <NoSelected />;
   //Almost done because now I need to see how to check what id I'm showing, not just <EmployeeManagement />
   if (selectedDashboard.dashboardId === 1)
-    content = <EmployeeManagement onAddEmployee={addNewEmployee} />;
+    content = (
+      <EmployeeManagement
+        onAddEmployee={addNewEmployee}
+        employeeList={selectedDashboard.employees}
+      />
+    );
   else if (selectedDashboard.dashboardId === 2)
     content = (
       <DepartmentManagement
@@ -97,6 +106,7 @@ function App() {
           <EmployeeModal
             isOpen={isEmployeeModalOpen}
             onClose={() => setIsEmployeeModalOpen(false)}
+            onAdd={handleSaveEmployee}
           />
         ) : null}
 
@@ -104,7 +114,7 @@ function App() {
           <DepartmentModal
             isOpen={isDepartmentModalOpen}
             onClose={() => setisDepartmentModalOpen(false)}
-            onAdd={handleSaveDepartments}
+            onAdd={handleSaveDepartment}
           />
         ) : null}
         {/* EmployeeManagment will be shown when Employees button in the Sidebar Main Meny is selected */}

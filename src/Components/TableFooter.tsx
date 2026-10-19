@@ -1,7 +1,7 @@
-import type { Department, Employees } from '../Types';
+import type { Department, Employee } from '../Types';
 
 interface TableFooterProps {
-  list: Employees[] | Department[];
+  list: Employee[] | Department[];
   dashboardType: string;
 }
 
