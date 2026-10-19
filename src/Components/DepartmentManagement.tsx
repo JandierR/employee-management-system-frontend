@@ -1,4 +1,4 @@
-import type { Departments } from '../Types';
+import type { Department } from '../Types';
 import ReusableManagementTop from './ReusableDashboardTop';
 import TableFooter from './TableFooter';
 import DepartmentTable from './DepartmentTable';
@@ -6,18 +6,20 @@ import Header from './Header';
 
 interface DeparmenteManagementProps {
   onAddDepartment: () => void;
+  departmentList: Department[];
 }
 
 export default function DepartmentManagement({
   onAddDepartment,
+  departmentList,
 }: DeparmenteManagementProps) {
-  const departmentList: Departments[] = [
-    {
-      id: 1,
-      name: 'Engineering',
-      description: 'Department for all Engineering employees',
-    },
-  ];
+  // const departmentList: Departments[] = [
+  //   {
+  //     id: 1,
+  //     name: 'Engineering',
+  //     description: 'Department for all Engineering employees',
+  //   },
+  // ];
 
   return (
     <>

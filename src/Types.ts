@@ -7,8 +7,8 @@ export interface Employees {
   status: string;
 }
 
-export interface Departments {
-  id: number;
+export interface Department {
+  id?: number;
   name: string;
   description: string;
 }

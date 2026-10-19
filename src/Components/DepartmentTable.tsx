@@ -1,7 +1,7 @@
-import type { Departments } from '../Types';
+import type { Department } from '../Types';
 
 interface DepartmentTableProps {
-  departmentList: Departments[];
+  departmentList: Department[];
 }
 
 export default function DepartmentTable({

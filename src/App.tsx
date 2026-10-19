@@ -1,24 +1,38 @@
 import { useState } from 'react';
 import EmployeeManagement from './Components/EmployeeManagement';
-import Header from './Components/Header';
 import Sidebar from './Components/Sidebar';
 import NoSelected from './Components/NoSelected';
 import DepartmentManagement from './Components/DepartmentManagement';
 import EmployeeModal from './Components/EmployeeModal';
 import DepartmentModal from './Components/DepartmentModal';
+import type { Department, Employees } from './Types';
+
+interface DashboardState {
+  dashboardId: number;
+  dashboards: { dashboardId: number; dashboardName: string }[];
+  employees: Employees[];
+  deparments: Department[];
+}
 
 function App() {
   const [isEmployeeModalOpen, setIsEmployeeModalOpen] = useState(false);
   const [isDepartmentModalOpen, setisDepartmentModalOpen] = useState(false);
-  const [selectedDashboard, setSelectedDashboard] = useState({
-    dashboardId: 0,
-    dashboards: [
-      { dashboardId: 1, dashboardName: 'Employees' },
-      { dashboardId: 2, dashboardName: 'Departments' },
-    ],
-    employees: [],
-    deparments: [],
-  });
+  const [selectedDashboard, setSelectedDashboard] = useState<DashboardState>(
+    {
+      dashboardId: 0,
+      dashboards: [
+        { dashboardId: 1, dashboardName: 'Employees' },
+        { dashboardId: 2, dashboardName: 'Departments' },
+      ],
+      employees: [],
+      deparments: [],
+    },
+    // console.log(),
+  );
+  //Quiero ver como hacer para imprimir departments para ver que cuando agrego un department, en realidad se guarde en ese array
+  //Aun asi, tambien se puede verificar visualmente en el dashboard o tabla de empleados
+
+  console.log(selectedDashboard.deparments);
 
   function showSelectedDashboard(selectedDashboardId: number) {
     setSelectedDashboard((prevState) => ({
@@ -28,6 +42,17 @@ function App() {
       //Lo digo, porque ahorita pienso que el ...prevState del principio en esta funcion,
       // hace eso, pero quizas no
     }));
+  }
+
+  function handleSaveDepartments(department: Department) {
+    setSelectedDashboard((prevState) => {
+      const newDepartment: Department = { ...department };
+      return {
+        ...prevState,
+        deparments: [...prevState.deparments, newDepartment],
+      };
+    });
+    setisDepartmentModalOpen(false);
   }
 
   function goBackNoSelectedView() {
@@ -52,7 +77,12 @@ function App() {
   if (selectedDashboard.dashboardId === 1)
     content = <EmployeeManagement onAddEmployee={addNewEmployee} />;
   else if (selectedDashboard.dashboardId === 2)
-    content = <DepartmentManagement onAddDepartment={addNewDepartment} />;
+    content = (
+      <DepartmentManagement
+        onAddDepartment={addNewDepartment}
+        departmentList={selectedDashboard.deparments}
+      />
+    );
 
   return (
     <main className="flex min-h-screen  bg-gray-50">
@@ -74,6 +104,7 @@ function App() {
           <DepartmentModal
             isOpen={isDepartmentModalOpen}
             onClose={() => setisDepartmentModalOpen(false)}
+            onAdd={handleSaveDepartments}
           />
         ) : null}
         {/* EmployeeManagment will be shown when Employees button in the Sidebar Main Meny is selected */}

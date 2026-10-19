@@ -1,13 +1,30 @@
+import { useRef } from 'react';
 import ModalWrapper from './ModalWrapper';
+import type { Department } from '../Types';
 
 interface DepartmentModalProps {
   isOpen: boolean;
   onClose: (close: boolean) => void;
+  onAdd: (department: Department) => void;
 }
 export default function DepartmentModal({
   isOpen,
   onClose,
+  onAdd,
 }: DepartmentModalProps) {
+  const deparmentName = useRef<HTMLInputElement>(null);
+  const deparmentDescription = useRef<HTMLTextAreaElement>(null);
+
+  function handleSave() {
+    const enteredDeparmentName = deparmentName.current?.value;
+    const enteredDepartmentDescription = deparmentDescription.current?.value;
+
+    onAdd({
+      name: enteredDeparmentName ?? '',
+      description: enteredDepartmentDescription ?? '',
+    });
+  }
+
   return (
     <ModalWrapper title="Add new Department" onClose={() => onClose(false)}>
       {/* Form Body */}
@@ -19,6 +36,7 @@ export default function DepartmentModal({
           </label>
           <input
             type="text"
+            ref={deparmentName}
             placeholder="e.g. Engineering"
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
           />
@@ -30,6 +48,7 @@ export default function DepartmentModal({
             Description
           </label>
           <textarea
+            ref={deparmentDescription}
             rows={4}
             placeholder="Provide a short overview of this department's responsibilities..."
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 resize-none"
@@ -46,6 +65,7 @@ export default function DepartmentModal({
           </button>
           <button
             type="submit"
+            onClick={handleSave}
             className="px-4 py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
             Add Department
           </button>
