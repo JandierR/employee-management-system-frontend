@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
 import ModalWrapper from './ModalWrapper';
 import type { Department } from '../Types';
 
@@ -6,11 +6,15 @@ interface DepartmentModalProps {
   isOpen: boolean;
   onClose: (close: boolean) => void;
   onAdd: (department: Department) => void;
+  myError: string;
+  setError: (error: string) => void;
 }
 export default function DepartmentModal({
   isOpen,
   onClose,
   onAdd,
+  setError,
+  myError,
 }: DepartmentModalProps) {
   const deparmentName = useRef<HTMLInputElement>(null);
   const deparmentDescription = useRef<HTMLTextAreaElement>(null);
@@ -18,6 +22,13 @@ export default function DepartmentModal({
   function handleSave() {
     const enteredDeparmentName = deparmentName.current?.value;
     const enteredDepartmentDescription = deparmentDescription.current?.value;
+    if (
+      enteredDeparmentName?.length === 0 ||
+      enteredDepartmentDescription?.length === 0
+    ) {
+      setError('Empty fields detected. Please enter a value.');
+      return;
+    }
 
     //Here I typed ?? to make it '' if enteredDepartment doesn't have a value
     //However, I need to remove it or fix it later when adding input validation so no empty inputs are available
@@ -27,10 +38,15 @@ export default function DepartmentModal({
       name: enteredDeparmentName ?? '',
       description: enteredDepartmentDescription ?? '',
     });
+    onClose(false);
   }
 
   return (
-    <ModalWrapper title="Add new Department" onClose={() => onClose(false)}>
+    <ModalWrapper
+      title="Add new Department"
+      onClose={() => {
+        onClose(false);
+      }}>
       {/* Form Body */}
       <form className="p-6 space-y-4">
         {/* Department Name */}
@@ -58,6 +74,8 @@ export default function DepartmentModal({
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 resize-none"
           />
         </div>
+
+        {myError && <p className="text-red-500 mt-1">{myError}</p>}
 
         {/* Action Buttons */}
         <div className="pt-4 flex items-center justify-end space-x-3 border-t border-slate-100">

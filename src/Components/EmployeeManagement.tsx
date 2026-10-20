@@ -15,7 +15,7 @@ export default function EmployeeManagement({
 }: EmployeeManagementProps) {
   return (
     <>
-      <Header text="/ employee" />
+      <Header text="/ employees" />
       <section id="employees" className="p-8">
         {/* Page title and Add button */}
         <ReusableManagementTop

@@ -29,6 +29,8 @@ function App() {
     deparments: [],
   });
 
+  const [error, setError] = useState('');
+
   function showSelectedDashboard(selectedDashboardId: number) {
     setSelectedDashboard((prevState) => ({
       ...prevState,
@@ -53,7 +55,10 @@ function App() {
   function handleSaveEmployee(employee: Employee) {
     setSelectedDashboard((prevState) => {
       const newEmployee: Employee = { ...employee };
-      return { ...prevState, employees: [...prevState.employees, newEmployee] };
+      return {
+        ...prevState,
+        employees: [...prevState.employees, newEmployee],
+      };
     });
 
     setIsEmployeeModalOpen(false);
@@ -105,16 +110,24 @@ function App() {
         {isEmployeeModalOpen ? (
           <EmployeeModal
             isOpen={isEmployeeModalOpen}
-            onClose={() => setIsEmployeeModalOpen(false)}
+            onClose={() => {
+              (setIsEmployeeModalOpen(false), setError(''));
+            }}
             onAdd={handleSaveEmployee}
+            error={error}
+            setError={setError}
           />
         ) : null}
 
         {isDepartmentModalOpen ? (
           <DepartmentModal
             isOpen={isDepartmentModalOpen}
-            onClose={() => setisDepartmentModalOpen(false)}
+            onClose={() => {
+              (setisDepartmentModalOpen(false), setError(''));
+            }}
             onAdd={handleSaveDepartment}
+            setError={setError}
+            myError={error}
           />
         ) : null}
         {/* EmployeeManagment will be shown when Employees button in the Sidebar Main Meny is selected */}

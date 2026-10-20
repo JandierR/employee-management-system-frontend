@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type Dispatch, type SetStateAction } from 'react';
 import ModalWrapper from './ModalWrapper';
 import type { Employee } from '../Types';
 
@@ -6,12 +6,16 @@ interface EmployeeModalProps {
   isOpen: boolean;
   onClose: (close: boolean) => void;
   onAdd: (employee: Employee) => void;
+  error: string;
+  setError: (error: string) => void;
 }
 //isOpen is not useful right now, I think
 export default function EmployeeModal({
   isOpen,
   onClose,
   onAdd,
+  error,
+  setError,
 }: EmployeeModalProps) {
   const employeeName = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
@@ -26,6 +30,17 @@ export default function EmployeeModal({
     const enteredPosition = position.current?.value;
     const enteredStatus = status.current?.value;
 
+    if (
+      enteredEmployeeName?.length === 0 ||
+      enteredEmail?.length === 0 ||
+      enteredDepartment?.length === 0 ||
+      enteredPosition?.length === 0 ||
+      enteredStatus?.length === 0
+    ) {
+      setError('Empty fields. Please enter a value.');
+      return;
+    }
+
     onAdd({
       //Id must be an integer greater than 0
       id: Math.random(),
@@ -35,6 +50,7 @@ export default function EmployeeModal({
       position: enteredPosition ?? '',
       status: enteredStatus ?? '',
     });
+    onClose(false);
   }
 
   return (
@@ -108,6 +124,7 @@ export default function EmployeeModal({
             <option value="inactive">Inactive</option>
           </select>
         </div>
+        {error && <p className="text-red-500 mt-1">{error}</p>}
 
         {/* Action Buttons */}
         <div className="pt-4 flex items-center justify-end space-x-3 border-t border-slate-100">
