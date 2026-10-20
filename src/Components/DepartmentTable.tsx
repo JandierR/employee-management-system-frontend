@@ -2,11 +2,14 @@ import type { Department } from '../Types';
 
 interface DepartmentTableProps {
   departmentList: Department[];
+  onDelete: (id: number) => void;
 }
 
 export default function DepartmentTable({
   departmentList,
+  onDelete
 }: DepartmentTableProps) {
+  console.log(departmentList);
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
       {/*I can take this department table and add more fields like ubication...*/}
@@ -46,6 +49,7 @@ export default function DepartmentTable({
 
                 <button
                   type="button"
+                  onClick={() => onDelete(department.id)}
                   className="text-sm font-medium text-red-600 transition hover:text-red-800">
                   Delete
                 </button>

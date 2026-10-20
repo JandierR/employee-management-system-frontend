@@ -7,11 +7,13 @@ import Header from './Header';
 interface DeparmenteManagementProps {
   onAddDepartment: () => void;
   departmentList: Department[];
+  onDelete: (id: number) => void;
 }
 
 export default function DepartmentManagement({
   onAddDepartment,
   departmentList,
+  onDelete,
 }: DeparmenteManagementProps) {
   // const departmentList: Departments[] = [
   //   {
@@ -34,7 +36,7 @@ export default function DepartmentManagement({
         />
 
         {/* Employee table */}
-        <DepartmentTable departmentList={departmentList} />
+        <DepartmentTable departmentList={departmentList} onDelete={onDelete} />
         {/* Table footer */}
         <TableFooter list={departmentList} dashboardType="department" />
       </section>

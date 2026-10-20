@@ -41,6 +41,16 @@ function App() {
     }));
   }
 
+  function handleDeleteDepartment(id: number) {
+    const updatedDepartments: Department[] =
+      selectedDashboard.deparments.filter((department) => department.id !== id);
+
+    setSelectedDashboard((prevState) => ({
+      ...prevState,
+      deparments: [...updatedDepartments],
+    }));
+  }
+
   function handleSaveDepartment(department: Department) {
     setSelectedDashboard((prevState) => {
       const newDepartment: Department = { ...department };
@@ -95,6 +105,7 @@ function App() {
       <DepartmentManagement
         onAddDepartment={addNewDepartment}
         departmentList={selectedDashboard.deparments}
+        onDelete={handleDeleteDepartment}
       />
     );
 
@@ -128,6 +139,7 @@ function App() {
             onAdd={handleSaveDepartment}
             setError={setError}
             myError={error}
+            existingDepartments={selectedDashboard.deparments}
           />
         ) : null}
         {/* EmployeeManagment will be shown when Employees button in the Sidebar Main Meny is selected */}

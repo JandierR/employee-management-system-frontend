@@ -8,7 +8,7 @@ export interface Employee {
 }
 
 export interface Department {
-  id?: number;
+  id: number;
   name: string;
   description: string;
 }

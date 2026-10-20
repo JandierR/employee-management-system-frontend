@@ -1,4 +1,4 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { useRef, type SubmitEventHandler } from 'react';
 import ModalWrapper from './ModalWrapper';
 import type { Department } from '../Types';
 
@@ -8,6 +8,7 @@ interface DepartmentModalProps {
   onAdd: (department: Department) => void;
   myError: string;
   setError: (error: string) => void;
+  existingDepartments: Department[];
 }
 export default function DepartmentModal({
   isOpen,
@@ -15,11 +16,21 @@ export default function DepartmentModal({
   onAdd,
   setError,
   myError,
+  existingDepartments,
 }: DepartmentModalProps) {
   const deparmentName = useRef<HTMLInputElement>(null);
   const deparmentDescription = useRef<HTMLTextAreaElement>(null);
 
-  function handleSave() {
+  const generateUniqueId = (): number => {
+    if (existingDepartments.length === 0) return 1000;
+
+    // Find the maximum ID currently in use and add 1
+    const ids = existingDepartments.map((d) => d.id);
+    return Math.max(...ids) + 1;
+  };
+
+  const handleSave: SubmitEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
     const enteredDeparmentName = deparmentName.current?.value;
     const enteredDepartmentDescription = deparmentDescription.current?.value;
     if (
@@ -34,12 +45,12 @@ export default function DepartmentModal({
     //However, I need to remove it or fix it later when adding input validation so no empty inputs are available
     onAdd({
       //Id must be an integer greater than 0
-      id: Math.random(),
+      id: generateUniqueId(),
       name: enteredDeparmentName ?? '',
       description: enteredDepartmentDescription ?? '',
     });
     onClose(false);
-  }
+  };
 
   return (
     <ModalWrapper
@@ -48,7 +59,7 @@ export default function DepartmentModal({
         onClose(false);
       }}>
       {/* Form Body */}
-      <form className="p-6 space-y-4">
+      <form onSubmit={handleSave} className="p-6 space-y-4">
         {/* Department Name */}
         <div>
           <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
@@ -87,7 +98,7 @@ export default function DepartmentModal({
           </button>
           <button
             type="submit"
-            onClick={handleSave}
+            // onClick={handleSave}
             className="px-4 py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
             Add Department
           </button>
