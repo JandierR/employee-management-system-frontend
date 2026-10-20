@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type SubmitEventHandler } from 'react';
 import ModalWrapper from './ModalWrapper';
 import type { Employee } from '../Types';
 
@@ -8,6 +8,7 @@ interface EmployeeModalProps {
   onAdd: (employee: Employee) => void;
   error: string;
   setError: (error: string) => void;
+  existingEmployees: Employee[];
 }
 //isOpen is not useful right now, I think
 export default function EmployeeModal({
@@ -16,6 +17,7 @@ export default function EmployeeModal({
   onAdd,
   error,
   setError,
+  existingEmployees,
 }: EmployeeModalProps) {
   const employeeName = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
@@ -23,7 +25,16 @@ export default function EmployeeModal({
   const position = useRef<HTMLInputElement>(null);
   const status = useRef<HTMLSelectElement>(null);
 
-  function handleSave() {
+  const generateUniqueId = (): number => {
+    if (existingEmployees.length === 0) return 1000;
+
+    // Find the maximum ID currently in use and add 1
+    const ids = existingEmployees.map((e) => e.id);
+    return Math.max(...ids) + 1;
+  };
+
+  const handleSave: SubmitEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
     const enteredEmployeeName = employeeName.current?.value;
     const enteredEmail = email.current?.value;
     const enteredDepartment = department.current?.value;
@@ -43,7 +54,7 @@ export default function EmployeeModal({
 
     onAdd({
       //Id must be an integer greater than 0
-      id: Math.random(),
+      id: generateUniqueId(),
       name: enteredEmployeeName ?? '',
       email: enteredEmail ?? '',
       department: enteredDepartment ?? '',
@@ -51,7 +62,7 @@ export default function EmployeeModal({
       status: enteredStatus ?? '',
     });
     onClose(false);
-  }
+  };
 
   return (
     <ModalWrapper title="Add new Employee" onClose={() => onClose(false)}>

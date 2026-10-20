@@ -2,9 +2,14 @@ import type { Employee } from '../Types';
 
 interface EmployeeTableProps {
   employeeList: Employee[];
+  onDelete: (id: number) => void;
 }
 
-export default function EmployeeTable({ employeeList }: EmployeeTableProps) {
+export default function EmployeeTable({
+  employeeList,
+  onDelete,
+}: EmployeeTableProps) {
+  console.log(employeeList);
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
       {/*I can take this table and make it a reusable component for upcoming entities like departments*/}
@@ -73,6 +78,7 @@ export default function EmployeeTable({ employeeList }: EmployeeTableProps) {
 
                 <button
                   type="button"
+                  onClick={() => onDelete(employee.id)}
                   className="text-sm font-medium text-red-600 transition hover:text-red-800">
                   Delete
                 </button>

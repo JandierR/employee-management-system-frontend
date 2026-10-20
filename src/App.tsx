@@ -51,6 +51,17 @@ function App() {
     }));
   }
 
+  function handleDeleteEmployee(id: number) {
+    const updatedEmployees: Employee[] = selectedDashboard.employees.filter(
+      (employee) => employee.id !== id,
+    );
+
+    setSelectedDashboard((prevState) => ({
+      ...prevState,
+      employees: [...updatedEmployees],
+    }));
+  }
+
   function handleSaveDepartment(department: Department) {
     setSelectedDashboard((prevState) => {
       const newDepartment: Department = { ...department };
@@ -98,6 +109,7 @@ function App() {
       <EmployeeManagement
         onAddEmployee={addNewEmployee}
         employeeList={selectedDashboard.employees}
+        onDelete={handleDeleteEmployee}
       />
     );
   else if (selectedDashboard.dashboardId === 2)
@@ -127,6 +139,7 @@ function App() {
             onAdd={handleSaveEmployee}
             error={error}
             setError={setError}
+            existingEmployees={selectedDashboard.employees}
           />
         ) : null}
 

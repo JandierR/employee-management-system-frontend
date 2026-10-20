@@ -7,9 +7,8 @@ interface DepartmentTableProps {
 
 export default function DepartmentTable({
   departmentList,
-  onDelete
+  onDelete,
 }: DepartmentTableProps) {
-  console.log(departmentList);
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
       {/*I can take this department table and add more fields like ubication...*/}

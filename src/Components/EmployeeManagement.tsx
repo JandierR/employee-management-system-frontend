@@ -7,11 +7,13 @@ import Header from './Header';
 interface EmployeeManagementProps {
   onAddEmployee: () => void;
   employeeList: Employee[];
+  onDelete: (id: number) => void;
 }
 
 export default function EmployeeManagement({
   onAddEmployee,
   employeeList,
+  onDelete,
 }: EmployeeManagementProps) {
   return (
     <>
@@ -26,7 +28,7 @@ export default function EmployeeManagement({
         />
 
         {/* Employee table */}
-        <EmployeeTable employeeList={employeeList} />
+        <EmployeeTable employeeList={employeeList} onDelete={onDelete} />
         {/* Table footer */}
         <TableFooter list={employeeList} dashboardType="employee" />
       </section>
