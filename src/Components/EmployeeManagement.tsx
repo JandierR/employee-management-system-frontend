@@ -8,12 +8,18 @@ interface EmployeeManagementProps {
   onAddEmployee: () => void;
   employeeList: Employee[];
   onDelete: (id: number) => void;
+  editModeId: number | null;
+  updateEmployee: (employee: Employee) => void;
+  startEditing: (id: number) => void;
 }
 
 export default function EmployeeManagement({
   onAddEmployee,
   employeeList,
   onDelete,
+  editModeId,
+  updateEmployee,
+  startEditing,
 }: EmployeeManagementProps) {
   return (
     <>
@@ -28,7 +34,13 @@ export default function EmployeeManagement({
         />
 
         {/* Employee table */}
-        <EmployeeTable employeeList={employeeList} onDelete={onDelete} />
+        <EmployeeTable
+          employeeList={employeeList}
+          onDelete={onDelete}
+          updateEmployee={updateEmployee}
+          startEditing={startEditing}
+          editModeId={editModeId}
+        />
         {/* Table footer */}
         <TableFooter list={employeeList} dashboardType="employee" />
       </section>

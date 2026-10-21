@@ -8,12 +8,18 @@ interface DeparmenteManagementProps {
   onAddDepartment: () => void;
   departmentList: Department[];
   onDelete: (id: number) => void;
+  editModeId: number | null;
+  updateDepartment: (department: Department) => void;
+  startEditing: (id: number) => void;
 }
 
 export default function DepartmentManagement({
   onAddDepartment,
   departmentList,
   onDelete,
+  editModeId,
+  updateDepartment,
+  startEditing,
 }: DeparmenteManagementProps) {
   // const departmentList: Departments[] = [
   //   {
@@ -36,7 +42,13 @@ export default function DepartmentManagement({
         />
 
         {/* Employee table */}
-        <DepartmentTable departmentList={departmentList} onDelete={onDelete} />
+        <DepartmentTable
+          departmentList={departmentList}
+          onDelete={onDelete}
+          editModeId={editModeId}
+          updateDepartment={updateDepartment}
+          startEditing={startEditing}
+        />
         {/* Table footer */}
         <TableFooter list={departmentList} dashboardType="department" />
       </section>

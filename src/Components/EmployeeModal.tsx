@@ -67,7 +67,7 @@ export default function EmployeeModal({
   return (
     <ModalWrapper title="Add new Employee" onClose={() => onClose(false)}>
       {/* Form Body */}
-      <form className="p-6 space-y-4">
+      <form onSubmit={handleSave} className="p-6 space-y-4">
         {/* Employee Name */}
         <div>
           <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
@@ -147,7 +147,6 @@ export default function EmployeeModal({
           </button>
           <button
             type="submit"
-            onClick={handleSave}
             className="px-4 py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
             Add Employee
           </button>

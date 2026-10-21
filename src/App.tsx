@@ -30,6 +30,62 @@ function App() {
   });
 
   const [error, setError] = useState('');
+  const [editModeId, setEditModeId] = useState<number | null>(null);
+
+  function handleUpdateDepartment(department: Department) {
+    const deparmentIndex: number = selectedDashboard.deparments.findIndex(
+      (myDepartment) => myDepartment.id === department.id,
+    );
+
+    setSelectedDashboard((prevState) => {
+      selectedDashboard.deparments[deparmentIndex] = { ...department };
+
+      return {
+        ...prevState,
+        deparments: [...prevState.deparments],
+      };
+    });
+    setEditModeId(null);
+  }
+
+  function handleSaveDepartment(department: Department) {
+    setSelectedDashboard((prevState) => {
+      const newDepartment: Department = { ...department };
+      return {
+        ...prevState,
+        deparments: [...prevState.deparments, newDepartment],
+      };
+    });
+    setisDepartmentModalOpen(false);
+  }
+
+  function handleUpdateEmployee(employee: Employee) {
+    const employeeIndex: number = selectedDashboard.employees.findIndex(
+      (myEmployee) => myEmployee.id === employee.id,
+    );
+
+    setSelectedDashboard((prevState) => {
+      selectedDashboard.employees[employeeIndex] = { ...employee };
+
+      return {
+        ...prevState,
+        employees: [...prevState.employees],
+      };
+    });
+    setEditModeId(null);
+  }
+
+  function handleSaveEmployee(employee: Employee) {
+    setSelectedDashboard((prevState) => {
+      const newEmployee: Employee = { ...employee };
+      return {
+        ...prevState,
+        employees: [...prevState.employees, newEmployee],
+      };
+    });
+
+    setIsEmployeeModalOpen(false);
+  }
 
   function showSelectedDashboard(selectedDashboardId: number) {
     setSelectedDashboard((prevState) => ({
@@ -51,6 +107,10 @@ function App() {
     }));
   }
 
+  function startEditing(currentId: number) {
+    setEditModeId(currentId);
+  }
+
   function handleDeleteEmployee(id: number) {
     const updatedEmployees: Employee[] = selectedDashboard.employees.filter(
       (employee) => employee.id !== id,
@@ -60,29 +120,6 @@ function App() {
       ...prevState,
       employees: [...updatedEmployees],
     }));
-  }
-
-  function handleSaveDepartment(department: Department) {
-    setSelectedDashboard((prevState) => {
-      const newDepartment: Department = { ...department };
-      return {
-        ...prevState,
-        deparments: [...prevState.deparments, newDepartment],
-      };
-    });
-    setisDepartmentModalOpen(false);
-  }
-
-  function handleSaveEmployee(employee: Employee) {
-    setSelectedDashboard((prevState) => {
-      const newEmployee: Employee = { ...employee };
-      return {
-        ...prevState,
-        employees: [...prevState.employees, newEmployee],
-      };
-    });
-
-    setIsEmployeeModalOpen(false);
   }
 
   function goBackNoSelectedView() {
@@ -110,6 +147,9 @@ function App() {
         onAddEmployee={addNewEmployee}
         employeeList={selectedDashboard.employees}
         onDelete={handleDeleteEmployee}
+        updateEmployee={handleUpdateEmployee}
+        editModeId={editModeId}
+        startEditing={startEditing}
       />
     );
   else if (selectedDashboard.dashboardId === 2)
@@ -118,6 +158,9 @@ function App() {
         onAddDepartment={addNewDepartment}
         departmentList={selectedDashboard.deparments}
         onDelete={handleDeleteDepartment}
+        editModeId={editModeId}
+        updateDepartment={handleUpdateDepartment}
+        startEditing={startEditing}
       />
     );
 
