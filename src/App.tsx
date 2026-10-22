@@ -95,6 +95,8 @@ function App() {
       //Lo digo, porque ahorita pienso que el ...prevState del principio en esta funcion,
       // hace eso, pero quizas no
     }));
+
+    setEditModeId(0);
   }
 
   function handleDeleteDepartment(id: number) {
