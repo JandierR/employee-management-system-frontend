@@ -78,14 +78,14 @@ export default function EmployeeTable({
                       ref={updatedEmployeeName}
                       defaultValue={employee.name}
                       placeholder="e.g. Sofia Ramirez"
-                      className="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                      className="w-full px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                     />
                     <input
                       type="email"
                       ref={updatedEmployeeEmail}
                       defaultValue={employee.email}
                       placeholder="e.g. sofia.ramirez@example.com"
-                      className="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs text-slate-600 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                      className="w-full px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-xs text-slate-600 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                     />
                   </div>
                 ) : (
@@ -108,7 +108,7 @@ export default function EmployeeTable({
                     ref={updatedEmployeeDepartment}
                     defaultValue={employee.department}
                     placeholder="e.g. Engineering"
-                    className="w-full max-w-45 px-2.5 py-1.5 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                    className="w-full max-w-45 px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   />
                 ) : (
                   <p className="text-sm text-gray-600">{employee.department}</p>
@@ -123,7 +123,7 @@ export default function EmployeeTable({
                     ref={updatedEmployeePosition}
                     defaultValue={employee.position}
                     placeholder="e.g. Software Engineer"
-                    className="w-full max-w-55 px-2.5 py-1.5 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                    className="w-full max-w-55 px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   />
                 ) : (
                   <p className="text-sm text-gray-600">{employee.position}</p>
@@ -136,13 +136,13 @@ export default function EmployeeTable({
                   <select
                     ref={updatedEmployeeStatus}
                     defaultValue={employee.status.toLowerCase()}
-                    className="w-full max-w-27.5 px-2 py-1.5 border border-slate-200 rounded-lg text-sm text-slate-800 bg-white focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                    className="w-full max-w-27.5 px-2 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                   </select>
                 ) : (
                   <span
-                    className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    className={`inline-flex rounded-full  px-2.5 py-0.5 text-xs font-medium ${
                       employee.status.toLowerCase() === 'active'
                         ? 'bg-green-50 text-green-700 border border-green-200'
                         : 'bg-gray-50 text-gray-600 border border-gray-200'
