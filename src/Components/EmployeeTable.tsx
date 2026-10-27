@@ -143,7 +143,7 @@ export default function EmployeeTable({
                 ) : (
                   <span
                     className={`inline-flex rounded-full  px-2.5 py-0.5 text-xs font-medium ${
-                      employee.status.toLowerCase() === 'active'
+                      employee.status?.toLowerCase() === 'active'
                         ? 'bg-green-50 text-green-700 border border-green-200'
                         : 'bg-gray-50 text-gray-600 border border-gray-200'
                     }`}>

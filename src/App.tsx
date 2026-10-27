@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import EmployeeManagement from './Components/EmployeeManagement';
 import Sidebar from './Components/Sidebar';
 import NoSelected from './Components/NoSelected';
@@ -6,12 +7,17 @@ import DepartmentManagement from './Components/DepartmentManagement';
 import EmployeeModal from './Components/EmployeeModal';
 import DepartmentModal from './Components/DepartmentModal';
 import type { Department, Employee } from './Types';
+// import ConnectionTest from './Test/ConnectionTest';
 
 interface DashboardState {
   dashboardId: number;
   dashboards: { dashboardId: number; dashboardName: string }[];
   employees: Employee[];
-  deparments: Department[];
+  departments: Department[];
+}
+interface BackendDataState {
+  employees: Employee[];
+  departments: Department[];
 }
 
 function App() {
@@ -26,23 +32,45 @@ function App() {
 
     //Here employees and departments are stored when adding a new entry
     employees: [],
-    deparments: [],
+    departments: [],
   });
+
+  useEffect(() => {
+    Promise.all([
+      axios.get<Employee[]>('http://localhost:8080/api/employees'),
+      axios.get<Department[]>('http://localhost:8080/api/departments'),
+    ])
+      .then(([employeesResponse, departmentsResponse]) => {
+        // Save the JSON "message" string from Spring Boot into our state
+        setSelectedDashboard((prevState) => {
+          return {
+            ...prevState,
+            employees: employeesResponse.data,
+
+            departments: departmentsResponse.data,
+          };
+        });
+      })
+      .catch((err) => {
+        console.error('Connection failed:', err);
+        setError('Could not connect to Spring Boot.');
+      });
+  }, []); // The empty array ensures this runs exactly once on load
 
   const [error, setError] = useState('');
   const [editModeId, setEditModeId] = useState<number | null>(null);
 
   function handleUpdateDepartment(department: Department) {
-    const deparmentIndex: number = selectedDashboard.deparments.findIndex(
+    const deparmentIndex: number = selectedDashboard.departments.findIndex(
       (myDepartment) => myDepartment.id === department.id,
     );
 
     setSelectedDashboard((prevState) => {
-      selectedDashboard.deparments[deparmentIndex] = { ...department };
+      selectedDashboard.departments[deparmentIndex] = { ...department };
 
       return {
         ...prevState,
-        deparments: [...prevState.deparments],
+        departments: [...prevState.departments],
       };
     });
     setEditModeId(null);
@@ -53,7 +81,7 @@ function App() {
       const newDepartment: Department = { ...department };
       return {
         ...prevState,
-        deparments: [...prevState.deparments, newDepartment],
+        departments: [...prevState.departments, newDepartment],
       };
     });
     setisDepartmentModalOpen(false);
@@ -101,11 +129,13 @@ function App() {
 
   function handleDeleteDepartment(id: number) {
     const updatedDepartments: Department[] =
-      selectedDashboard.deparments.filter((department) => department.id !== id);
+      selectedDashboard.departments.filter(
+        (department) => department.id !== id,
+      );
 
     setSelectedDashboard((prevState) => ({
       ...prevState,
-      deparments: [...updatedDepartments],
+      departments: [...updatedDepartments],
     }));
   }
 
@@ -158,7 +188,7 @@ function App() {
     content = (
       <DepartmentManagement
         onAddDepartment={addNewDepartment}
-        departmentList={selectedDashboard.deparments}
+        departmentList={selectedDashboard.departments}
         onDelete={handleDeleteDepartment}
         editModeId={editModeId}
         updateDepartment={handleUpdateDepartment}
@@ -197,11 +227,12 @@ function App() {
             onAdd={handleSaveDepartment}
             setError={setError}
             myError={error}
-            existingDepartments={selectedDashboard.deparments}
+            existingDepartments={selectedDashboard.departments}
           />
         ) : null}
         {/* EmployeeManagment will be shown when Employees button in the Sidebar Main Meny is selected */}
         {/* <EmployeeManagement /> */}
+        {/* <ConnectionTest /> */}
       </main>
     </main>
   );
