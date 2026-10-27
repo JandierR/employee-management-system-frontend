@@ -77,13 +77,24 @@ function App() {
   }
 
   function handleSaveDepartment(department: Department) {
-    setSelectedDashboard((prevState) => {
-      const newDepartment: Department = { ...department };
-      return {
-        ...prevState,
-        departments: [...prevState.departments, newDepartment],
-      };
-    });
+    axios
+      .post<Department>('http://localhost:8080/api/departments', department)
+      .then((response) => {
+        // The backend returns the saved department object (with its new ID)
+        const savedDepartment = response.data;
+
+        // 4. Update your main dashboard state to instantly show the new row
+        setSelectedDashboard((prevState) => {
+          return {
+            ...prevState,
+            // Keep existing departments and append the new one
+            departments: [...prevState.departments, savedDepartment],
+          };
+        });
+      })
+      .catch((error) => {
+        console.error('Error creating department:', error);
+      });
     setisDepartmentModalOpen(false);
   }
 
@@ -104,14 +115,24 @@ function App() {
   }
 
   function handleSaveEmployee(employee: Employee) {
-    setSelectedDashboard((prevState) => {
-      const newEmployee: Employee = { ...employee };
-      return {
-        ...prevState,
-        employees: [...prevState.employees, newEmployee],
-      };
-    });
+    axios
+      .post<Employee>('http://localhost:8080/api/employees', employee)
+      .then((response) => {
+        // The backend returns the saved department object (with its new ID)
+        const savedEmployee = response.data;
 
+        // 4. Update your main dashboard state to instantly show the new row
+        setSelectedDashboard((prevState) => {
+          return {
+            ...prevState,
+            // Keep existing departments and append the new one
+            employees: [...prevState.employees, savedEmployee],
+          };
+        });
+      })
+      .catch((error) => {
+        console.error('Error creating department:', error);
+      });
     setIsEmployeeModalOpen(false);
   }
 

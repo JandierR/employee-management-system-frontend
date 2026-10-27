@@ -1,5 +1,5 @@
 export interface Employee {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   department: string;
@@ -8,7 +8,7 @@ export interface Employee {
 }
 
 export interface Department {
-  id: number;
+  id?: number;
   name: string;
   description: string;
 }

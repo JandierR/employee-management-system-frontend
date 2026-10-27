@@ -25,14 +25,6 @@ export default function EmployeeModal({
   const position = useRef<HTMLInputElement>(null);
   const status = useRef<HTMLSelectElement>(null);
 
-  const generateUniqueId = (): number => {
-    if (existingEmployees.length === 0) return 1000;
-
-    // Find the maximum ID currently in use and add 1
-    const ids = existingEmployees.map((e) => e.id);
-    return Math.max(...ids) + 1;
-  };
-
   const handleSave: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     const enteredEmployeeName = employeeName.current?.value;
@@ -53,8 +45,6 @@ export default function EmployeeModal({
     }
 
     onAdd({
-      //Id must be an integer greater than 0
-      id: generateUniqueId(),
       name: enteredEmployeeName ?? '',
       email: enteredEmail ?? '',
       department: enteredDepartment ?? '',

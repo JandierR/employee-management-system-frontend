@@ -21,14 +21,6 @@ export default function DepartmentModal({
   const deparmentName = useRef<HTMLInputElement>(null);
   const deparmentDescription = useRef<HTMLTextAreaElement>(null);
 
-  const generateUniqueId = (): number => {
-    if (existingDepartments.length === 0) return 1000;
-
-    // Find the maximum ID currently in use and add 1
-    const ids = existingDepartments.map((d) => d.id);
-    return Math.max(...ids) + 1;
-  };
-
   const handleSave: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     const enteredDeparmentName = deparmentName.current?.value;
@@ -40,12 +32,7 @@ export default function DepartmentModal({
       setError('Empty fields detected. Please enter a value.');
       return;
     }
-
-    //Here I typed ?? to make it '' if enteredDepartment doesn't have a value
-    //However, I need to remove it or fix it later when adding input validation so no empty inputs are available
     onAdd({
-      //Id must be an integer greater than 0
-      id: generateUniqueId(),
       name: enteredDeparmentName ?? '',
       description: enteredDepartmentDescription ?? '',
     });
