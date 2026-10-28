@@ -149,25 +149,15 @@ function App() {
   }
 
   function handleDeleteDepartment(id: number) {
-    axios
-      .delete(`http://localhost:8080/api/departments/${id}`)
-      .then(() => {
-        // The backend returns the saved department object (with its new ID)
+    const updatedDepartments: Department[] =
+      selectedDashboard.departments.filter(
+        (department) => department.id !== id,
+      );
 
-        // 4. Update your main dashboard state to instantly show the new row
-        setSelectedDashboard((prev) => ({
-          ...prev,
-          departments: prev.departments.filter((d) => d.id !== id),
-        }));
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 409) {
-          alert(err.response.data);
-        } else {
-          console.error('Delete failed:', err);
-          alert('An unexpected error occurred while deleting.');
-        }
-      });
+    setSelectedDashboard((prevState) => ({
+      ...prevState,
+      departments: [...updatedDepartments],
+    }));
   }
 
   function startEditing(currentId: number) {
