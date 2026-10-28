@@ -229,6 +229,7 @@ function App() {
         {isEmployeeModalOpen ? (
           <EmployeeModal
             isOpen={isEmployeeModalOpen}
+            departmentList={selectedDashboard.departments}
             onClose={() => {
               (setIsEmployeeModalOpen(false), setError(''));
             }}

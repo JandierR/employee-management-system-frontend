@@ -1,8 +1,9 @@
 import { useRef, type SubmitEventHandler } from 'react';
 import ModalWrapper from './ModalWrapper';
-import type { Employee } from '../Types';
+import type { Employee, Department } from '../Types';
 
 interface EmployeeModalProps {
+  departmentList: Department[];
   isOpen: boolean;
   onClose: (close: boolean) => void;
   onAdd: (employee: Employee) => void;
@@ -17,26 +18,30 @@ export default function EmployeeModal({
   onAdd,
   error,
   setError,
+  departmentList,
   existingEmployees,
 }: EmployeeModalProps) {
-  const employeeName = useRef<HTMLInputElement>(null);
+  const employeeFirstName = useRef<HTMLInputElement>(null);
+  const employeeLastName = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
-  const department = useRef<HTMLInputElement>(null);
+  const department = useRef<HTMLSelectElement>(null);
   const position = useRef<HTMLInputElement>(null);
   const status = useRef<HTMLSelectElement>(null);
 
   const handleSave: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const enteredEmployeeName = employeeName.current?.value;
+    const enteredEmployeeFirstName = employeeFirstName.current?.value;
+    const enteredEmployeeLastName = employeeLastName.current?.value;
     const enteredEmail = email.current?.value;
     const enteredDepartment = department.current?.value;
     const enteredPosition = position.current?.value;
     const enteredStatus = status.current?.value;
 
     if (
-      enteredEmployeeName?.length === 0 ||
+      enteredEmployeeFirstName?.length === 0 ||
+      enteredEmployeeLastName?.length === 0 ||
       enteredEmail?.length === 0 ||
-      enteredDepartment?.length === 0 ||
+      enteredDepartment === undefined ||
       enteredPosition?.length === 0 ||
       enteredStatus?.length === 0
     ) {
@@ -44,10 +49,15 @@ export default function EmployeeModal({
       return;
     }
 
+    const myDepartment = departmentList.find(
+      (department) => department.name === enteredDepartment,
+    );
+
     onAdd({
-      name: enteredEmployeeName ?? '',
+      firstName: enteredEmployeeFirstName ?? '',
+      lastName: enteredEmployeeLastName ?? '',
       email: enteredEmail ?? '',
-      department: enteredDepartment ?? '',
+      departmentId: myDepartment?.id ?? undefined,
       position: enteredPosition ?? '',
       status: enteredStatus ?? '',
     });
@@ -59,16 +69,29 @@ export default function EmployeeModal({
       {/* Form Body */}
       <form onSubmit={handleSave} className="p-6 space-y-4">
         {/* Employee Name */}
-        <div>
-          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
-            Employee Name
-          </label>
-          <input
-            type="text"
-            ref={employeeName}
-            placeholder="e.g. Sofia Ramirez"
-            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              First Name
+            </label>
+            <input
+              type="text"
+              ref={employeeFirstName}
+              placeholder="e.g. Jandier"
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+              Last Name
+            </label>
+            <input
+              type="text"
+              ref={employeeLastName}
+              placeholder="e.g. Rojas"
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+            />
+          </div>
         </div>
 
         {/* Email Address */}
@@ -79,7 +102,7 @@ export default function EmployeeModal({
           <input
             type="email"
             ref={email}
-            placeholder="e.g. sofia.ramirez@example.com"
+            placeholder="e.g. jandier.ro@example.com"
             className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
           />
         </div>
@@ -91,12 +114,13 @@ export default function EmployeeModal({
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
               Department
             </label>
-            <input
-              type="text"
+            <select
               ref={department}
-              placeholder="e.g. Engineering"
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
-            />
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 bg-white focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+              {departmentList.map((department) => (
+                <option key={department.id}>{department.name}</option>
+              ))}
+            </select>
           </div>
 
           {/* Position */}

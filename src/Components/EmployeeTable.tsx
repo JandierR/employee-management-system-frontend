@@ -16,14 +16,18 @@ export default function EmployeeTable({
   updateEmployee,
   startEditing,
 }: EmployeeTableProps) {
-  const updatedEmployeeName = useRef<HTMLInputElement>(null);
+  const updatedEmployeeFirstName = useRef<HTMLInputElement>(null);
+  const updatedEmployeeLastName = useRef<HTMLInputElement>(null);
   const updatedEmployeeEmail = useRef<HTMLInputElement>(null);
   const updatedEmployeeDepartment = useRef<HTMLInputElement>(null);
   const updatedEmployeePosition = useRef<HTMLInputElement>(null);
   const updatedEmployeeStatus = useRef<HTMLSelectElement>(null);
 
   function handleEmployeeUpdate(currentId: number) {
-    const enteredUpdatedEmployeeName = updatedEmployeeName.current?.value;
+    const enteredUpdatedEmployeeFirstName =
+      updatedEmployeeFirstName.current?.value;
+    const enteredUpdatedEmployeeLastName =
+      updatedEmployeeLastName.current?.value;
     const enteredUpdatedEmployeeEmail = updatedEmployeeEmail.current?.value;
     const enteredUpdatedEmployeeDepartment =
       updatedEmployeeDepartment.current?.value;
@@ -31,11 +35,16 @@ export default function EmployeeTable({
       updatedEmployeePosition.current?.value;
     const enteredUpdatedEmployeeStatus = updatedEmployeeStatus.current?.value;
 
+    const myEmployee = employeeList.find(
+      (employee) => employee.id === currentId,
+    );
+
     updateEmployee({
       id: currentId,
-      name: enteredUpdatedEmployeeName ?? '',
+      firstName: enteredUpdatedEmployeeFirstName ?? '',
+      lastName: enteredUpdatedEmployeeLastName ?? '',
       email: enteredUpdatedEmployeeEmail ?? '',
-      department: enteredUpdatedEmployeeDepartment ?? '',
+      departmentId: myEmployee?.departmentId ?? undefined,
       position: enteredUpdatedEmployeePosition ?? '',
       status: enteredUpdatedEmployeeStatus ?? '',
     });
@@ -75,23 +84,30 @@ export default function EmployeeTable({
                   <div className="flex flex-col gap-1.5 max-w-xs">
                     <input
                       type="text"
-                      ref={updatedEmployeeName}
-                      defaultValue={employee.name}
-                      placeholder="e.g. Sofia Ramirez"
+                      ref={updatedEmployeeFirstName}
+                      defaultValue={employee.firstName}
+                      placeholder="e.g. Jandier"
+                      className="w-full px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                    />
+                    <input
+                      type="text"
+                      ref={updatedEmployeeLastName}
+                      defaultValue={employee.lastName}
+                      placeholder="e.g. Rojas"
                       className="w-full px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                     />
                     <input
                       type="email"
                       ref={updatedEmployeeEmail}
                       defaultValue={employee.email}
-                      placeholder="e.g. sofia.ramirez@example.com"
+                      placeholder="e.g. jan.ro@example.com"
                       className="w-full px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-xs text-slate-600 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                     />
                   </div>
                 ) : (
                   <>
                     <p className="text-sm font-semibold text-gray-900">
-                      {employee.name}
+                      {`${employee.firstName} ` + `${employee.lastName}`}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
                       {employee.email}
@@ -106,12 +122,14 @@ export default function EmployeeTable({
                   <input
                     type="text"
                     ref={updatedEmployeeDepartment}
-                    defaultValue={employee.department}
+                    defaultValue={employee.departmentId}
                     placeholder="e.g. Engineering"
                     className="w-full max-w-45 px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   />
                 ) : (
-                  <p className="text-sm text-gray-600">{employee.department}</p>
+                  <p className="text-sm text-gray-600">
+                    {employee.departmentId}
+                  </p>
                 )}
               </td>
 
@@ -135,7 +153,7 @@ export default function EmployeeTable({
                 {editModeId === employee.id ? (
                   <select
                     ref={updatedEmployeeStatus}
-                    defaultValue={employee.status.toLowerCase()}
+                    defaultValue={employee.status?.toLowerCase()}
                     className="w-full max-w-27.5 px-2 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -157,14 +175,14 @@ export default function EmployeeTable({
                 {editModeId === employee.id ? (
                   <button
                     type="button"
-                    onClick={() => handleEmployeeUpdate(employee.id)}
+                    onClick={() => handleEmployeeUpdate(employee.id ?? 0)}
                     className="mr-3.5 text-sm font-semibold text-blue-600 transition hover:text-blue-800">
                     Save
                   </button>
                 ) : (
                   <button
                     type="button"
-                    onClick={() => startEditing(employee.id)}
+                    onClick={() => startEditing(employee.id ?? 0)}
                     className="mr-3.5 text-sm font-medium text-blue-600 transition hover:text-blue-800">
                     Edit
                   </button>
@@ -172,7 +190,7 @@ export default function EmployeeTable({
 
                 <button
                   type="button"
-                  onClick={() => onDelete(employee.id)}
+                  onClick={() => onDelete(employee.id ?? 0)}
                   className="text-sm font-medium text-red-600 transition hover:text-red-800">
                   Delete
                 </button>

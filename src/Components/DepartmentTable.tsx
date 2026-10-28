@@ -83,7 +83,7 @@ export default function DepartmentTable({
                 {editModeId === department.id ? (
                   <button
                     type="button"
-                    onClick={() => handleDepartmentUpdate(department.id)}
+                    onClick={() => handleDepartmentUpdate(department.id ?? 0)}
                     className="mr-3 text-sm font-medium text-blue-600 transition hover:text-blue-800">
                     Save
                   </button>
@@ -91,7 +91,7 @@ export default function DepartmentTable({
                   <button
                     type="button"
                     key={department.id}
-                    onClick={() => startEditing(department.id)}
+                    onClick={() => startEditing(department.id ?? 0)}
                     className="mr-3 text-sm font-medium text-blue-600 transition hover:text-blue-800">
                     Edit
                   </button>
@@ -99,7 +99,7 @@ export default function DepartmentTable({
 
                 <button
                   type="button"
-                  onClick={() => onDelete(department.id)}
+                  onClick={() => onDelete(department.id ?? 0)}
                   className="text-sm font-medium text-red-600 transition hover:text-red-800">
                   Delete
                 </button>
