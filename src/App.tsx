@@ -41,7 +41,6 @@ function App() {
       axios.get<Department[]>('http://localhost:8080/api/departments'),
     ])
       .then(([employeesResponse, departmentsResponse]) => {
-        // Save the JSON "message" string from Spring Boot into our state
         setSelectedDashboard((prevState) => {
           return {
             ...prevState,
@@ -55,7 +54,7 @@ function App() {
         console.error('Connection failed:', err);
         setError('Could not connect to Spring Boot.');
       });
-  }, []); // The empty array ensures this runs exactly once on load
+  }, []);
 
   const [error, setError] = useState('');
   const [editModeId, setEditModeId] = useState<number | null>(null);
@@ -80,14 +79,11 @@ function App() {
     axios
       .post<Department>('http://localhost:8080/api/departments', department)
       .then((response) => {
-        // The backend returns the saved department object (with its new ID)
         const savedDepartment = response.data;
 
-        // 4. Update your main dashboard state to instantly show the new row
         setSelectedDashboard((prevState) => {
           return {
             ...prevState,
-            // Keep existing departments and append the new one
             departments: [...prevState.departments, savedDepartment],
           };
         });
@@ -118,14 +114,11 @@ function App() {
     axios
       .post<Employee>('http://localhost:8080/api/employees', employee)
       .then((response) => {
-        // The backend returns the saved department object (with its new ID)
         const savedEmployee = response.data;
 
-        // 4. Update your main dashboard state to instantly show the new row
         setSelectedDashboard((prevState) => {
           return {
             ...prevState,
-            // Keep existing departments and append the new one
             employees: [...prevState.employees, savedEmployee],
           };
         });
