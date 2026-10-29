@@ -29,8 +29,6 @@ function App() {
       { dashboardId: 1, dashboardName: 'Employees' },
       { dashboardId: 2, dashboardName: 'Departments' },
     ],
-
-    //Here employees and departments are stored when adding a new entry
     employees: [],
     departments: [],
   });
@@ -133,24 +131,28 @@ function App() {
     setSelectedDashboard((prevState) => ({
       ...prevState,
       dashboardId: selectedDashboardId,
-      //Quizas aqui hay que pasar ...prevState a los arrays, employees y departments.
-      //Lo digo, porque ahorita pienso que el ...prevState del principio en esta funcion,
-      // hace eso, pero quizas no
     }));
 
     setEditModeId(0);
   }
 
   function handleDeleteDepartment(id: number) {
-    const updatedDepartments: Department[] =
-      selectedDashboard.departments.filter(
-        (department) => department.id !== id,
-      );
-
-    setSelectedDashboard((prevState) => ({
-      ...prevState,
-      departments: [...updatedDepartments],
-    }));
+    axios
+      .delete(`http://localhost:8080/api/departments/${id}`)
+      .then(() => {
+        setSelectedDashboard((prev) => ({
+          ...prev,
+          departments: prev.departments.filter((d) => d.id !== id),
+        }));
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 409) {
+          alert(err.response.data);
+        } else {
+          console.error('Delete failed:', err);
+          alert('An unexpected error occurred while deleting.');
+        }
+      });
   }
 
   function startEditing(currentId: number) {
@@ -176,17 +178,14 @@ function App() {
   }
 
   function addNewEmployee() {
-    //Se cambia el state para abrir un modal que me permita tener un mini formulario con los inputs para crear el employee
     setIsEmployeeModalOpen(true);
   }
   function addNewDepartment() {
-    //Se cambia el state para abrir un modal que me permita tener un mini formulario con los inputs para crear el employee
     setisDepartmentModalOpen(true);
   }
 
-  //Here I'll show the selectedDashboard either Employees or departments, when id has a number value 1 or 2 (almost done)
   let content = <NoSelected />;
-  //Almost done because now I need to see how to check what id I'm showing, not just <EmployeeManagement />
+
   if (selectedDashboard.dashboardId === 1)
     content = (
       <EmployeeManagement
