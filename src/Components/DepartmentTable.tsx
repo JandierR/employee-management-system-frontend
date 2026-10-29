@@ -43,6 +43,9 @@ export default function DepartmentTable({
             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
               Description
             </th>
+            <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
+              ID
+            </th>
           </tr>
         </thead>
 
@@ -73,10 +76,13 @@ export default function DepartmentTable({
                     className="w-full px-3 py-2 border bg-slate-100 border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   />
                 ) : (
-                  <p className="text-sm font-semibold text-gray-900">
+                  <p className="text-sm  text-gray-600">
                     {department.description}
                   </p>
                 )}
+              </td>
+              <td className="px-6 py-4">
+                <p className="text-sm  text-gray-600">{department.id}</p>
               </td>
 
               <td className="px-6 py-4 text-right whitespace-nowrap">
