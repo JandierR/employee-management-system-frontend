@@ -102,18 +102,27 @@ function App() {
   }
 
   function handleUpdateEmployee(employee: Employee) {
-    const employeeIndex: number = selectedDashboard.employees.findIndex(
-      (myEmployee) => myEmployee.id === employee.id,
-    );
-
-    setSelectedDashboard((prevState) => {
-      selectedDashboard.employees[employeeIndex] = { ...employee };
-
-      return {
-        ...prevState,
-        employees: [...prevState.employees],
-      };
-    });
+    axios
+      .put<Employee>(
+        `http://localhost:8080/api/employees/${employee.id}`,
+        employee,
+      )
+      .then(() => {
+        //Maybe I can use the response data as the employee data rather than receiving as an argument the department
+        const employeeIndex: number = selectedDashboard.employees.findIndex(
+          (myEmployee) => myEmployee.id === employee.id,
+        );
+        setSelectedDashboard((prevState) => {
+          selectedDashboard.employees[employeeIndex] = { ...employee };
+          return {
+            ...prevState,
+            employees: [...prevState.employees],
+          };
+        });
+      })
+      .catch((error) => {
+        console.error('Error updating employee:', error);
+      });
     setEditModeId(null);
   }
 

@@ -29,8 +29,8 @@ export default function EmployeeTable({
     const enteredUpdatedEmployeeLastName =
       updatedEmployeeLastName.current?.value;
     const enteredUpdatedEmployeeEmail = updatedEmployeeEmail.current?.value;
-    const enteredUpdatedEmployeeDepartment =
-      updatedEmployeeDepartment.current?.value;
+    // const enteredUpdatedEmployeeDepartment =
+    //   updatedEmployeeDepartment.current?.value;
     const enteredUpdatedEmployeePosition =
       updatedEmployeePosition.current?.value;
     const enteredUpdatedEmployeeStatus = updatedEmployeeStatus.current?.value;
@@ -118,19 +118,7 @@ export default function EmployeeTable({
 
               {/* Department Column */}
               <td className="px-6 py-3 vertical-align-middle">
-                {editModeId === employee.id ? (
-                  <input
-                    type="text"
-                    ref={updatedEmployeeDepartment}
-                    defaultValue={employee.departmentId}
-                    placeholder="e.g. Engineering"
-                    className="w-full max-w-45 px-2.5 py-1.5 border bg-slate-100 border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
-                  />
-                ) : (
-                  <p className="text-sm text-gray-600">
-                    {employee.departmentId}
-                  </p>
-                )}
+                <p className="text-sm text-gray-600">{employee.departmentId}</p>
               </td>
 
               {/* Position Column */}
