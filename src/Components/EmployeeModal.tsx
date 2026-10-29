@@ -33,7 +33,7 @@ export default function EmployeeModal({
     const enteredEmployeeFirstName = employeeFirstName.current?.value;
     const enteredEmployeeLastName = employeeLastName.current?.value;
     const enteredEmail = email.current?.value;
-    const enteredDepartment = department.current?.value;
+    const selectedDepartmentId = department.current?.value;
     const enteredPosition = position.current?.value;
     const enteredStatus = status.current?.value;
 
@@ -41,7 +41,7 @@ export default function EmployeeModal({
       enteredEmployeeFirstName?.length === 0 ||
       enteredEmployeeLastName?.length === 0 ||
       enteredEmail?.length === 0 ||
-      enteredDepartment === undefined ||
+      !selectedDepartmentId ||
       enteredPosition?.length === 0 ||
       enteredStatus?.length === 0
     ) {
@@ -49,15 +49,13 @@ export default function EmployeeModal({
       return;
     }
 
-    const myDepartment = departmentList.find(
-      (department) => department.name === enteredDepartment,
-    );
+    const parsedDepartmentId = Number(selectedDepartmentId);
 
     onAdd({
       firstName: enteredEmployeeFirstName ?? '',
       lastName: enteredEmployeeLastName ?? '',
       email: enteredEmail ?? '',
-      departmentId: myDepartment?.id ?? undefined,
+      departmentId: parsedDepartmentId,
       position: enteredPosition ?? '',
       status: enteredStatus ?? '',
     });
@@ -118,7 +116,9 @@ export default function EmployeeModal({
               ref={department}
               className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-800 bg-white focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
               {departmentList.map((department) => (
-                <option key={department.id}>{department.name}</option>
+                <option key={department.id} value={department.id}>
+                  {department.name}
+                </option>
               ))}
             </select>
           </div>

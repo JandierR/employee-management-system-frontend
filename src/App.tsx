@@ -122,7 +122,7 @@ function App() {
         });
       })
       .catch((error) => {
-        console.error('Error creating department:', error);
+        console.error('Error creating Employee:', error);
       });
     setIsEmployeeModalOpen(false);
   }
@@ -160,14 +160,18 @@ function App() {
   }
 
   function handleDeleteEmployee(id: number) {
-    const updatedEmployees: Employee[] = selectedDashboard.employees.filter(
-      (employee) => employee.id !== id,
-    );
-
-    setSelectedDashboard((prevState) => ({
-      ...prevState,
-      employees: [...updatedEmployees],
-    }));
+    axios
+      .delete(`http://localhost:8080/api/employees/${id}`)
+      .then(() => {
+        setSelectedDashboard((prev) => ({
+          ...prev,
+          employees: prev.employees.filter((e) => e.id !== id),
+        }));
+      })
+      .catch((err) => {
+        console.error('Delete failed:', err);
+        alert('An unexpected error occurred while deleting.');
+      });
   }
 
   function goBackNoSelectedView() {
